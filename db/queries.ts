@@ -50,7 +50,7 @@ export async function getProducts() {
 
   const query = `
       query getProducts {
-        products(first: 250, query: "status:ACTIVE") {
+        products(first: 250) {
           edges {
             node {
               id
