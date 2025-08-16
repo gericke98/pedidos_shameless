@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { ShopifyProduct, createOrder } from "@/db/queries";
 import AddressAutocomplete from "./AddressAutocomplete";
 
@@ -356,12 +357,14 @@ export default function OrderForm({
                         key={item.variantId}
                         className="flex items-center p-3 sm:p-4 bg-gray-50 rounded-xl"
                       >
-                        <div className="flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 bg-gray-200 rounded-lg mr-3 sm:mr-4">
+                        <div className="flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 bg-gray-200 rounded-lg mr-3 sm:mr-4 relative overflow-hidden">
                           {item.product.image?.src && (
-                            <img
+                            <Image
                               src={item.product.image.src}
                               alt={item.product.title}
-                              className="w-full h-full object-cover rounded-lg"
+                              fill
+                              className="object-cover rounded-lg"
+                              sizes="(max-width: 640px) 48px, 64px"
                             />
                           )}
                         </div>
@@ -698,12 +701,14 @@ export default function OrderForm({
                       className="border border-gray-200 rounded-xl p-3 sm:p-4 hover:shadow-lg transition-shadow"
                     >
                       <div className="flex items-start space-x-3 sm:space-x-4">
-                        <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 bg-gray-200 rounded-lg">
+                        <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 bg-gray-200 rounded-lg relative overflow-hidden">
                           {product.image?.src && (
-                            <img
+                            <Image
                               src={product.image.src}
                               alt={product.title}
-                              className="w-full h-full object-cover rounded-lg"
+                              fill
+                              className="object-cover rounded-lg"
+                              sizes="(max-width: 640px) 64px, 80px"
                             />
                           )}
                         </div>

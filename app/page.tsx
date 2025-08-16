@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { OrderFormServer } from "./components/orderFormServer";
 
 export default function Home() {
@@ -6,10 +7,13 @@ export default function Home() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <div className="mb-6">
-            <img
+            <Image
               src="/LOGO_black.png"
               alt="Shameless Collective"
+              width={240}
+              height={96}
               className="h-20 sm:h-24 mx-auto"
+              priority
             />
           </div>
           <p className="text-lg text-gray-600">
