@@ -207,8 +207,10 @@ interface OrderInput {
   address1: string;
   city: string;
   zip: string;
-  productId: string;
-  variantId: string;
+  lineItems: Array<{
+    variantId: string;
+    quantity: number;
+  }>;
 }
 
 export async function createOrder(orderData: OrderInput) {
@@ -216,6 +218,14 @@ export async function createOrder(orderData: OrderInput) {
   const shopifyGraphQLUrl = `${process.env.NEXT_PUBLIC_SHOP_URL}/admin/api/2025-01/graphql.json`;
   // Get province code from the province field if available, otherwise try to derive it from city
   const provinceCode = getProvinceCode(orderData.city);
+
+  // Calculate total amount from line items
+  const totalAmount = orderData.lineItems.reduce((total, item) => {
+    // For now, we'll use a placeholder calculation since we don't have variant prices here
+    // In a real implementation, you'd fetch variant prices or pass them in the orderData
+    return total + item.quantity * 10; // Placeholder price of €10 per item
+  }, 0);
+
   const query = `
     mutation OrderCreate(
       $options: OrderCreateOptionsInput, 
@@ -269,13 +279,11 @@ export async function createOrder(orderData: OrderInput) {
       currency: "EUR",
       email: orderData.email,
       financialStatus: "PAID",
-      lineItems: [
-        {
-          variantId: orderData.variantId,
-          quantity: 1,
-          requiresShipping: true,
-        },
-      ],
+      lineItems: orderData.lineItems.map((item) => ({
+        variantId: item.variantId,
+        quantity: item.quantity,
+        requiresShipping: true,
+      })),
       note: `Pedido Pop Up`,
       shippingAddress: {
         address1: orderData.address1,
@@ -306,7 +314,7 @@ export async function createOrder(orderData: OrderInput) {
         {
           amountSet: {
             shopMoney: {
-              amount: "0.01",
+              amount: (totalAmount + 4).toFixed(2), // Total + shipping
               currencyCode: "EUR",
             },
           },
@@ -337,6 +345,7 @@ export async function createOrder(orderData: OrderInput) {
           province: orderData.city,
           provinceCode,
           address: orderData.address1,
+          lineItems: orderData.lineItems,
         },
       });
     }

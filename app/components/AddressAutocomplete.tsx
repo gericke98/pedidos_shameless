@@ -223,7 +223,7 @@ export default function AddressAutocomplete({
     <input
       ref={inputRef}
       type="text"
-      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-black"
       placeholder="Enter your address"
     />
   );
